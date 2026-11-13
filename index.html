@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Gastos Personales</title>
+    <!-- Hoja de estilos del proyecto -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- =====================================================
+         MENÚ LATERAL (en celular se transforma en barra inferior)
+         ===================================================== -->
+    <aside class="sidebar">
+        <div class="logo">
+            <span class="logo-icono">💰</span>
+            <span class="logo-texto">MisFinanzas</span>
+        </div>
+
+        <!-- Cada botón tiene un atributo data-seccion con el id de la sección que muestra -->
+        <nav class="menu">
+            <button class="menu-item activo" data-seccion="dashboard">
+                <span class="menu-icono">📊</span><span class="menu-texto">Dashboard</span>
+            </button>
+            <button class="menu-item" data-seccion="nuevo">
+                <span class="menu-icono">➕</span><span class="menu-texto">Nuevo movimiento</span>
+            </button>
+            <button class="menu-item" data-seccion="historial">
+                <span class="menu-icono">📋</span><span class="menu-texto">Historial</span>
+            </button>
+            <button class="menu-item" data-seccion="estadisticas">
+                <span class="menu-icono">📈</span><span class="menu-texto">Estadísticas</span>
+            </button>
+        </nav>
+
+        <p class="sidebar-pie">Moneda: Pesos argentinos (ARS)</p>
+    </aside>
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+         ===================================================== -->
+    <main class="contenido">
+
+        <!-- ---------- SECCIÓN 1: DASHBOARD ---------- -->
+        <section id="dashboard" class="seccion activa">
+            <header class="encabezado">
+                <h1>Dashboard</h1>
+                <p>Resumen general de tus finanzas personales</p>
+            </header>
+
+            <!-- Cuatro tarjetas de resumen -->
+            <div class="tarjetas-resumen">
+                <div class="tarjeta tarjeta-dato">
+                    <span class="dato-icono icono-verde">💼</span>
+                    <div>
+                        <p class="dato-titulo">Balance total</p>
+                        <p class="dato-valor" id="totalBalance">$ 0</p>
+                    </div>
+                </div>
+                <div class="tarjeta tarjeta-dato">
+                    <span class="dato-icono icono-verde">⬆️</span>
+                    <div>
+                        <p class="dato-titulo">Total de ingresos</p>
+                        <p class="dato-valor texto-ingreso" id="totalIngresos">$ 0</p>
+                    </div>
+                </div>
+                <div class="tarjeta tarjeta-dato">
+                    <span class="dato-icono icono-rojo">⬇️</span>
+                    <div>
+                        <p class="dato-titulo">Total de gastos</p>
+                        <p class="dato-valor texto-gasto" id="totalGastos">$ 0</p>
+                    </div>
+                </div>
+                <div class="tarjeta tarjeta-dato">
+                    <span class="dato-icono icono-gris">🧾</span>
+                    <div>
+                        <p class="dato-titulo">Movimientos registrados</p>
+                        <p class="dato-valor" id="totalMovimientos">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Últimos movimientos + gráfico -->
+            <div class="grilla-dos">
+                <div class="tarjeta">
+                    <div class="tarjeta-cabecera">
+                        <h2>Últimos movimientos</h2>
+                        <button class="boton-link" data-ir="historial">Ver todos →</button>
+                    </div>
+                    <ul class="lista-movimientos" id="listaUltimos"></ul>
+                </div>
+
+                <div class="tarjeta">
+                    <h2>Gastos por categoría</h2>
+                    <div class="contenedor-grafico">
+                        <canvas id="graficoDashboard"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen del mes actual -->
+            <div class="tarjeta">
+                <h2>Actividad de <span id="nombreMes"></span></h2>
+                <div class="resumen-mes">
+                    <div class="resumen-item">
+                        <p>Ingresos del mes</p>
+                        <strong class="texto-ingreso" id="mesIngresos">$ 0</strong>
+                    </div>
+                    <div class="resumen-item">
+                        <p>Gastos del mes</p>
+                        <strong class="texto-gasto" id="mesGastos">$ 0</strong>
+                    </div>
+                    <div class="resumen-item">
+                        <p>Balance del mes</p>
+                        <strong id="mesBalance">$ 0</strong>
+                    </div>
+                    <div class="resumen-item">
+                        <p>Movimientos del mes</p>
+                        <strong id="mesCantidad">0</strong>
+                    </div>
+                </div>
+                <p class="nota" id="mesMayorGasto"></p>
+            </div>
+        </section>
+
+        <!-- ---------- SECCIÓN 2: NUEVO MOVIMIENTO ---------- -->
+        <section id="nuevo" class="seccion">
+            <header class="encabezado">
+                <h1 id="tituloFormulario">Nuevo movimiento</h1>
+                <p>Registrá un ingreso o un gasto</p>
+            </header>
+
+            <div class="tarjeta tarjeta-formulario">
+                <!-- novalidate: desactiva la validación del navegador para hacerla nosotros con JavaScript -->
+                <form id="formMovimiento" novalidate>
+
+                    <!-- Tipo de movimiento -->
+                    <div class="campo">
+                        <label>Tipo de movimiento</label>
+                        <div class="selector-tipo">
+                            <label class="opcion-tipo">
+                                <input type="radio" name="tipo" value="gasto" checked>
+                                <span>⬇️ Gasto</span>
+                            </label>
+                            <label class="opcion-tipo">
+                                <input type="radio" name="tipo" value="ingreso">
+                                <span>⬆️ Ingreso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="descripcion">Descripción</label>
+                        <input type="text" id="descripcion" maxlength="60" placeholder="Ej: Compra en el supermercado">
+                    </div>
+
+                    <div class="fila-campos">
+                        <div class="campo">
+                            <label for="monto">Monto (ARS)</label>
+                            <input type="number" id="monto" min="0" step="0.01" placeholder="Ej: 15000">
+                        </div>
+                        <div class="campo">
+                            <label for="fecha">Fecha</label>
+                            <input type="date" id="fecha">
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="categoria">Categoría</label>
+                        <!-- Las opciones se cargan desde JavaScript según el tipo elegido -->
+                        <select id="categoria"></select>
+                    </div>
+
+                    <!-- Acá se muestran los errores de validación -->
+                    <p class="mensaje-error" id="mensajeError"></p>
+
+                    <div class="botones-formulario">
+                        <button type="submit" class="boton boton-principal" id="botonGuardar">Guardar movimiento</button>
+                        <button type="button" class="boton boton-secundario oculto" id="botonCancelar">Cancelar edición</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ---------- SECCIÓN 3: HISTORIAL ---------- -->
+        <section id="historial" class="seccion">
+            <header class="encabezado">
+                <h1>Historial de movimientos</h1>
+                <p>Buscá, filtrá, editá o eliminá tus movimientos</p>
+            </header>
+
+            <div class="tarjeta">
+                <div class="filtros">
+                    <input type="text" id="buscador" placeholder="🔍 Buscar por descripción...">
+                    <select id="filtroCategoria"></select>
+                </div>
+
+                <div class="tabla-contenedor">
+                    <table class="tabla">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Descripción</th>
+                                <th>Categoría</th>
+                                <th>Tipo</th>
+                                <th class="derecha">Monto</th>
+                                <th class="centro">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTabla"></tbody>
+                    </table>
+                </div>
+                <p class="vacio oculto" id="historialVacio">No se encontraron movimientos.</p>
+
+                <div class="pie-historial">
+                    <span id="contadorHistorial"></span>
+                    <button class="boton boton-secundario boton-chico" id="botonRestaurar">Restaurar datos de ejemplo</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---------- SECCIÓN 4: ESTADÍSTICAS ---------- -->
+        <section id="estadisticas" class="seccion">
+            <header class="encabezado">
+                <h1>Estadísticas</h1>
+                <p>Análisis visual de tus ingresos y gastos</p>
+            </header>
+
+            <div class="grilla-dos">
+                <div class="tarjeta">
+                    <h2>Gastos por categoría</h2>
+                    <div class="contenedor-grafico">
+                        <canvas id="graficoCategorias"></canvas>
+                    </div>
+                </div>
+                <div class="tarjeta">
+                    <h2>Ingresos frente a gastos</h2>
+                    <div class="contenedor-grafico">
+                        <canvas id="graficoComparacion"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarjeta">
+                <h2>Evolución de los gastos en <span id="nombreMesEstadisticas"></span></h2>
+                <p class="nota">Gasto acumulado día a día durante el mes actual.</p>
+                <div class="contenedor-grafico grafico-ancho">
+                    <canvas id="graficoEvolucion"></canvas>
+                </div>
+            </div>
+
+            <div class="tarjeta">
+                <h2>Detalle de gastos por categoría</h2>
+                <ul class="lista-categorias" id="detalleCategorias"></ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Aviso flotante (ej: "Movimiento guardado") -->
+    <div class="aviso" id="aviso"></div>
+
+    <!-- Chart.js guardado localmente: funciona sin conexión a internet -->
+    <script src="lib/chart.umd.min.js"></script>
+    <!-- Lógica de la aplicación -->
+    <script src="script.js"></script>
+</body>
+</html>
