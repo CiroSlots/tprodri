@@ -233,28 +233,34 @@ button { cursor: pointer; }
     white-space: nowrap;
 }
 
-/* ---------- 7. GRÁFICOS ---------- */
-.contenedor-grafico {
-    position: relative;
-    height: 260px;
+/* ---------- 7. GRÁFICOS DE BARRAS ---------- */
+.grafico-fila { margin-bottom: 14px; }
+
+.grafico-texto {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.92rem;
+    margin-bottom: 4px;
 }
 
-.grafico-ancho { height: 300px; }
+/* Fondo gris de la barra */
+.barra {
+    height: 10px;
+    background-color: var(--fondo);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Parte coloreada: su ancho (width) lo pone JavaScript */
+.barra-relleno {
+    height: 100%;
+    border-radius: 5px;
+}
 
 .vacio {
     color: var(--texto-suave);
     text-align: center;
     padding: 24px 0;
-}
-
-/* Mensaje que reemplaza al gráfico cuando no hay datos */
-.grafico-vacio {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--texto-suave);
 }
 
 /* ---------- 8. RESUMEN MENSUAL ---------- */
@@ -364,10 +370,6 @@ select:focus {
     margin-bottom: 8px;
 }
 
-.campo-error {
-    border-color: var(--rojo) !important;
-}
-
 /* ---------- 10. BOTONES ---------- */
 .botones-formulario {
     display: flex;
@@ -396,11 +398,6 @@ select:focus {
 }
 
 .boton-secundario:hover { background-color: var(--fondo); }
-
-.boton-chico {
-    padding: 7px 14px;
-    font-size: 0.85rem;
-}
 
 .boton-link {
     background: none;
@@ -481,49 +478,8 @@ select:focus {
     flex-wrap: wrap;
 }
 
-/* ---------- 12. DETALLE DE CATEGORÍAS ---------- */
-.lista-categorias { list-style: none; }
-
-.lista-categorias li { margin-bottom: 14px; }
-
-.categoria-fila {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.92rem;
-    margin-bottom: 4px;
-}
-
-.barra {
-    height: 8px;
-    background-color: var(--fondo);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.barra-relleno {
-    height: 100%;
-    border-radius: 4px;
-}
-
-/* ---------- 13. AVISO FLOTANTE ---------- */
-.aviso {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    background-color: var(--texto);
-    color: var(--blanco);
-    padding: 12px 20px;
-    border-radius: 10px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-    z-index: 100;
-}
-
-.aviso.visible { opacity: 1; }
-
 /* =========================================================
-   14. DISEÑO RESPONSIVE
+   12. DISEÑO RESPONSIVE
    ========================================================= */
 
 /* Tablets y pantallas medianas */
@@ -569,12 +525,6 @@ select:focus {
     .fila-campos, .filtros { flex-direction: column; gap: 0; }
     .filtros input { margin-bottom: 10px; }
 
-    .aviso {
-        right: 16px;
-        left: 16px;
-        bottom: 80px;
-        text-align: center;
-    }
 }
 
 /* Celulares chicos */

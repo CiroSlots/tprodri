@@ -86,16 +86,14 @@
                 <div class="tarjeta">
                     <div class="tarjeta-cabecera">
                         <h2>Últimos movimientos</h2>
-                        <button class="boton-link" data-ir="historial">Ver todos →</button>
+                        <button class="boton-link" data-seccion="historial">Ver todos →</button>
                     </div>
                     <ul class="lista-movimientos" id="listaUltimos"></ul>
                 </div>
 
                 <div class="tarjeta">
                     <h2>Gastos por categoría</h2>
-                    <div class="contenedor-grafico">
-                        <canvas id="graficoDashboard"></canvas>
-                    </div>
+                    <div class="grafico" id="graficoDashboard"></div>
                 </div>
             </div>
 
@@ -120,7 +118,6 @@
                         <strong id="mesCantidad">0</strong>
                     </div>
                 </div>
-                <p class="nota" id="mesMayorGasto"></p>
             </div>
         </section>
 
@@ -193,7 +190,19 @@
             <div class="tarjeta">
                 <div class="filtros">
                     <input type="text" id="buscador" placeholder="🔍 Buscar por descripción...">
-                    <select id="filtroCategoria"></select>
+                    <select id="filtroCategoria">
+                        <option value="todas">Todas las categorías</option>
+                        <option>Alimentación</option>
+                        <option>Transporte</option>
+                        <option>Entretenimiento</option>
+                        <option>Servicios</option>
+                        <option>Salud</option>
+                        <option>Compras</option>
+                        <option>Sueldo</option>
+                        <option>Trabajos extras</option>
+                        <option>Transferencias</option>
+                        <option>Otros</option>
+                    </select>
                 </div>
 
                 <div class="tabla-contenedor">
@@ -215,7 +224,6 @@
 
                 <div class="pie-historial">
                     <span id="contadorHistorial"></span>
-                    <button class="boton boton-secundario boton-chico" id="botonRestaurar">Restaurar datos de ejemplo</button>
                 </div>
             </div>
         </section>
@@ -230,38 +238,23 @@
             <div class="grilla-dos">
                 <div class="tarjeta">
                     <h2>Gastos por categoría</h2>
-                    <div class="contenedor-grafico">
-                        <canvas id="graficoCategorias"></canvas>
-                    </div>
+                    <div class="grafico" id="graficoCategorias"></div>
                 </div>
                 <div class="tarjeta">
                     <h2>Ingresos frente a gastos</h2>
-                    <div class="contenedor-grafico">
-                        <canvas id="graficoComparacion"></canvas>
-                    </div>
+                    <div class="grafico" id="graficoComparacion"></div>
                 </div>
             </div>
 
             <div class="tarjeta">
                 <h2>Evolución de los gastos en <span id="nombreMesEstadisticas"></span></h2>
-                <p class="nota">Gasto acumulado día a día durante el mes actual.</p>
-                <div class="contenedor-grafico grafico-ancho">
-                    <canvas id="graficoEvolucion"></canvas>
-                </div>
+                <p class="nota">Total gastado en cada día del mes actual.</p>
+                <div class="grafico" id="graficoEvolucion"></div>
             </div>
 
-            <div class="tarjeta">
-                <h2>Detalle de gastos por categoría</h2>
-                <ul class="lista-categorias" id="detalleCategorias"></ul>
-            </div>
         </section>
     </main>
 
-    <!-- Aviso flotante (ej: "Movimiento guardado") -->
-    <div class="aviso" id="aviso"></div>
-
-    <!-- Chart.js guardado localmente: funciona sin conexión a internet -->
-    <script src="lib/chart.umd.min.js"></script>
     <!-- Lógica de la aplicación -->
     <script src="script.js"></script>
 </body>
