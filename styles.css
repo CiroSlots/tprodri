@@ -2,12 +2,12 @@
    GESTOR DE GASTOS PERSONALES - ESTILOS
    ========================================================= */
 
-/* ---------- 1. VARIABLES DE COLOR Y MEDIDAS ----------
+/* ---------- VARIABLES DE COLOR Y MEDIDAS ----------
    Definimos los colores una sola vez y los reutilizamos
    en todo el archivo con var(--nombre). */
 :root {
     --verde: #047857;          /* color principal (esmeralda) */
-    --verde-oscuro: #064e3b;   /* menú lateral */
+    --verde-oscuro: #064e3b;   /* menu lateral */
     --verde-claro: #d1fae5;    /* fondos suaves */
     --rojo: #dc2626;           /* gastos */
     --rojo-claro: #fee2e2;
@@ -21,7 +21,7 @@
     --ancho-menu: 240px;
 }
 
-/* ---------- 2. ESTILOS BASE ---------- */
+/* ---------- ESTILOS BASE ---------- */
 * {
     margin: 0;
     padding: 0;
@@ -48,7 +48,7 @@ button { cursor: pointer; }
 
 .oculto { display: none !important; }
 
-/* ---------- 3. MENÚ LATERAL ---------- */
+/* ---------- MENU LATERAL ---------- */
 .sidebar {
     position: fixed;
     top: 0;
@@ -94,7 +94,7 @@ button { cursor: pointer; }
     background-color: rgba(255, 255, 255, 0.08);
 }
 
-/* Opción del menú que corresponde a la sección visible */
+/* Opcion del menu que corresponde a la seccion visible */
 .menu-item.activo {
     background-color: var(--verde);
     color: var(--blanco);
@@ -108,21 +108,21 @@ button { cursor: pointer; }
     padding: 0 10px;
 }
 
-/* ---------- 4. CONTENIDO PRINCIPAL ---------- */
+/* ---------- CONTENIDO PRINCIPAL ---------- */
 .contenido {
     margin-left: var(--ancho-menu);
     padding: 32px;
     max-width: 1200px;
 }
 
-/* Las secciones están ocultas salvo la que tiene la clase "activa" */
+/* Las secciones estan ocultas salvo la que tiene la clase "activa" */
 .seccion { display: none; }
 .seccion.activa { display: block; }
 
 .encabezado { margin-bottom: 24px; }
 .encabezado p { color: var(--texto-suave); }
 
-/* ---------- 5. TARJETAS ---------- */
+/* ---------- TARJETAS ---------- */
 .tarjeta {
     background-color: var(--blanco);
     border-radius: var(--radio);
@@ -187,7 +187,7 @@ button { cursor: pointer; }
     gap: 20px;
 }
 
-/* ---------- 6. LISTA DE MOVIMIENTOS ---------- */
+/* ---------- LISTA DE MOVIMIENTOS ---------- */
 .lista-movimientos { list-style: none; }
 
 .movimiento {
@@ -233,7 +233,7 @@ button { cursor: pointer; }
     white-space: nowrap;
 }
 
-/* ---------- 7. GRÁFICOS DE BARRAS ---------- */
+/* ---------- GRAFICOS DE BARRAS ---------- */
 .grafico-fila { margin-bottom: 14px; }
 
 .grafico-texto {
@@ -263,7 +263,7 @@ button { cursor: pointer; }
     padding: 24px 0;
 }
 
-/* ---------- 8. RESUMEN MENSUAL ---------- */
+/* ---------- RESUMEN MENSUAL ---------- */
 .resumen-mes {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -289,7 +289,7 @@ button { cursor: pointer; }
     color: var(--texto-suave);
 }
 
-/* ---------- 9. FORMULARIO ---------- */
+/* ---------- FORMULARIO ---------- */
 .tarjeta-formulario { max-width: 640px; }
 
 .campo {
@@ -337,7 +337,7 @@ select:focus {
 
 .opcion-tipo { flex: 1; }
 
-.opcion-tipo input { display: none; }  /* ocultamos el círculo del radio */
+.opcion-tipo input { display: none; }  /* ocultamos el circulo del radio */
 
 .opcion-tipo span {
     display: block;
@@ -348,7 +348,7 @@ select:focus {
     cursor: pointer;
 }
 
-/* Cuando el radio está marcado, pintamos su etiqueta */
+/* Cuando el radio esta marcado, pintamos su etiqueta */
 .opcion-tipo input[value="gasto"]:checked + span {
     background-color: var(--rojo-claro);
     border-color: var(--rojo);
@@ -370,7 +370,7 @@ select:focus {
     margin-bottom: 8px;
 }
 
-/* ---------- 10. BOTONES ---------- */
+/* ---------- BOTONES ---------- */
 .botones-formulario {
     display: flex;
     gap: 10px;
@@ -418,7 +418,7 @@ select:focus {
 .boton-icono:hover { background-color: var(--fondo); }
 .boton-icono.eliminar:hover { background-color: var(--rojo-claro); border-color: var(--rojo); }
 
-/* ---------- 11. HISTORIAL (FILTROS Y TABLA) ---------- */
+/* ---------- HISTORIAL (FILTROS Y TABLA) ---------- */
 .filtros {
     display: flex;
     gap: 12px;
@@ -518,7 +518,7 @@ select:focus {
 
     .contenido {
         margin-left: 0;
-        padding: 20px 16px 90px;   /* espacio abajo para la barra de menú */
+        padding: 20px 16px 90px;   /* espacio abajo para la barra de menu */
     }
 
     .grilla-dos { grid-template-columns: 1fr; }

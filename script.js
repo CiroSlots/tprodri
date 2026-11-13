@@ -1,7 +1,7 @@
 /* GESTOR DE GASTOS PERSONALES - Cada movimiento es un objeto { id, tipo, descripcion, monto, categoria, fecha }
    y todos se guardan en el arreglo "movimientos" y en LocalStorage. */
 
-/* ---------- 1. CONFIGURACIÓN ---------- */
+/* ---------- CONFIGURACION ---------- */
 const CATEGORIAS = {
     gasto: ["Alimentación", "Transporte", "Entretenimiento", "Servicios", "Salud", "Compras", "Otros"],
     ingreso: ["Sueldo", "Trabajos extras", "Transferencias", "Otros"]
@@ -11,14 +11,14 @@ const COLORES = {
     "Salud": "#ef4444", "Compras": "#ec4899", "Otros": "#6b7280", "Ingresos": "#047857", "Gastos": "#dc2626"
 };
 
-/* ---------- 2. FUNCIONES DE AYUDA ---------- */
+/* ---------- FUNCIONES DE AYUDA ---------- */
 // Atajo para no escribir document.getElementById todo el tiempo
 const el = (id) => document.getElementById(id);
 // 45000 -> "$ 45.000"
 const pesos = (n) => n.toLocaleString("es-AR", { style: "currency", currency: "ARS", minimumFractionDigits: 0 });
 // "2026-11-03" -> "03/11/2026"
 const fechaLinda = (fecha) => fecha.split("-").reverse().join("/");
-// Ordena del más reciente al más antiguo
+// Ordena del mas reciente al mas antiguo
 const ordenarPorFecha = (lista) => [...lista].sort((a, b) => b.fecha.localeCompare(a.fecha));
 // Fecha de hoy como "AAAA-MM-DD" (el formato que usa <input type="date">)
 function hoy() {
@@ -37,7 +37,7 @@ function sumarPor(lista, campo) {
     return resultado;
 }
 
-/* ---------- 3. DATOS Y LOCALSTORAGE ---------- */
+/* ---------- DATOS Y LOCALSTORAGE ---------- */
 // Datos de ejemplo con fechas del mes actual, para que la app no arranque vacía
 function datosDeEjemplo() {
     const dia = (n) => hoy().slice(0, 8) + String(Math.min(n, new Date().getDate())).padStart(2, "0");
@@ -54,14 +54,14 @@ let movimientos = JSON.parse(localStorage.getItem("movimientos")) || datosDeEjem
 let idEnEdicion = null;   // id del movimiento que se está editando (null = ninguno)
 const guardarEnStorage = () => localStorage.setItem("movimientos", JSON.stringify(movimientos));
 
-/* ---------- 4. NAVEGACIÓN ---------- */
+/* ---------- NAVEGACION ---------- */
 // Muestra solo la sección elegida y marca su botón en el menú
 function mostrarSeccion(id) {
     document.querySelectorAll(".seccion").forEach((s) => s.classList.toggle("activa", s.id === id));
     document.querySelectorAll(".menu-item").forEach((b) => b.classList.toggle("activo", b.dataset.seccion === id));
 }
 
-/* ---------- 5. DASHBOARD ---------- */
+/* ---------- DASHBOARD ---------- */
 function actualizarDashboard() {
     // Tarjetas
     const t = calcularTotales(movimientos);
@@ -84,7 +84,7 @@ function actualizarDashboard() {
     el("mesCantidad").textContent = delMes.length;
 }
 
-/* ---------- 6. FORMULARIO (AGREGAR Y EDITAR) ---------- */
+/* ---------- FORMULARIO (AGREGAR Y EDITAR) ---------- */
 // Carga en el <select> las categorías del tipo elegido
 function cargarCategorias(tipo) {
     el("categoria").innerHTML = '<option value="">Seleccioná una categoría</option>' +
@@ -92,7 +92,7 @@ function cargarCategorias(tipo) {
 }
 function guardarMovimiento(evento) {
     evento.preventDefault();   // evita que la página se recargue
-    // 1. Leemos el formulario (sacamos < y > para que no se pueda meter HTML)
+    //  Lee el formulario (sacamos < y > para que no se pueda meter HTML)
     const mov = {
         id: idEnEdicion || Date.now(),
         tipo: document.querySelector('input[name="tipo"]:checked').value,
@@ -101,7 +101,7 @@ function guardarMovimiento(evento) {
         categoria: el("categoria").value,
         fecha: el("fecha").value
     };
-    // 2. Validamos
+    //  Valida
     let error = "";
     if (mov.descripcion.length < 3) error = "La descripción debe tener al menos 3 caracteres.";
     else if (!(mov.monto > 0)) error = "Ingresá un monto válido mayor a cero.";
@@ -109,16 +109,16 @@ function guardarMovimiento(evento) {
     else if (mov.fecha === "") error = "Seleccioná una fecha.";
     el("mensajeError").textContent = error;
     if (error !== "") return;
-    // 3. Si se estaba editando reemplazamos el movimiento; si no, agregamos uno nuevo
+    //  Si se estaba editando reemplaza el movimiento; si no, agrega uno nuevo
     if (idEnEdicion) movimientos[movimientos.findIndex((m) => m.id === idEnEdicion)] = mov;
     else movimientos.push(mov);
-    // 4. Guardamos, actualizamos la pantalla y vamos al historial
+    // Guarda, actualiza la pantalla y nos lleva al historial
     guardarEnStorage();
     limpiarFormulario();
     actualizarTodo();
     mostrarSeccion("historial");
 }
-// Deja el formulario vacío y en modo "nuevo movimiento"
+// Deja el formulario vacio y en modo "nuevo movimiento"
 function limpiarFormulario() {
     el("formMovimiento").reset();
     el("fecha").value = hoy();
@@ -140,11 +140,11 @@ function editar(id) {
     mostrarSeccion("nuevo");
 }
 
-/* ---------- 7. HISTORIAL ---------- */
+/* ---------- HISTORIAL ---------- */
 function mostrarHistorial() {
     const texto = el("buscador").value.toLowerCase();
     const categoria = el("filtroCategoria").value;
-    // Aplicamos la búsqueda y el filtro de categoría
+    // Aplicamos la busqueda y el filtro de categoria
     const lista = ordenarPorFecha(movimientos).filter((m) =>
         m.descripcion.toLowerCase().includes(texto) && (categoria === "todas" || m.categoria === categoria));
     el("cuerpoTabla").innerHTML = lista.map((m) => `
@@ -163,8 +163,8 @@ function eliminar(id) {
     actualizarTodo();
 }
 
-/* ---------- 8. GRÁFICOS (barras hechas con HTML y CSS) ---------- */
-// "datos" es un objeto { etiqueta: monto }. La barra más grande ocupa el 100% del ancho.
+/* ---------- GRAFICOS (barras hechas con HTML y CSS) ---------- */
+// "datos" es un objeto { etiqueta: monto }. La barra mas grande ocupa el 100% del ancho.
 function dibujarBarras(idContenedor, datos) {
     const etiquetas = Object.keys(datos);
     if (etiquetas.length === 0) return el(idContenedor).innerHTML = '<p class="vacio">No hay datos para mostrar.</p>';
@@ -181,22 +181,22 @@ function actualizarGraficos() {
     dibujarBarras("graficoDashboard", sumarPor(gastos, "categoria"));
     dibujarBarras("graficoCategorias", sumarPor(gastos, "categoria"));
     dibujarBarras("graficoComparacion", movimientos.length ? { Ingresos: t.ingresos, Gastos: t.gastos } : {});
-    // Evolución: gastos del mes actual sumados por día (ordenados por fecha)
+    // Evolucion: gastos del mes actual sumados por día (ordenados por fecha)
     const porDia = sumarPor(gastos.filter((m) => m.fecha.startsWith(hoy().slice(0, 7))), "fecha");
     const ordenado = {};
     Object.keys(porDia).sort().forEach((fecha) => ordenado[fechaLinda(fecha)] = porDia[fecha]);
     dibujarBarras("graficoEvolucion", ordenado);
 }
 
-/* ---------- 9. ACTUALIZAR TODO (mantiene todo sincronizado) ---------- */
+/* ---------- ACTUALIZAR TODO (mantiene todo sincronizado) ---------- */
 function actualizarTodo() {
     actualizarDashboard();
     mostrarHistorial();
     actualizarGraficos();
 }
 
-/* ---------- 10. EVENTOS E INICIO ---------- */
-// Botones que cambian de sección (menú y "Ver todos")
+/* ---------- EVENTOS E INICIO ---------- */
+// Botones que cambian de seccion (menu y "Ver todos")
 document.querySelectorAll("[data-seccion]").forEach((boton) => boton.addEventListener("click", () => {
     if (boton.dataset.seccion === "nuevo") limpiarFormulario();
     mostrarSeccion(boton.dataset.seccion);
